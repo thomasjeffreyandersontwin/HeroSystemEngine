@@ -21,3 +21,13 @@ C:\champions\applications\HeroTabletopRefactored\HeroSystemsEngine\bin\Debug\New
 C:\champions\applications\HeroTabletopRefactored\HeroSystemsEngine\obj\Debug\HeroSystemsEngine.csprojResolveAssemblyReference.cache
 C:\champions\applications\HeroTabletopRefactored\HeroSystemsEngine\obj\Debug\HeroSystemsEngine.dll
 C:\champions\applications\HeroTabletopRefactored\HeroSystemsEngine\obj\Debug\HeroSystemsEngine.pdb
+C:\champions\applications\HeroSystemsEngine\bin\Debug\HeroSystemsEngine.dll.config
+C:\champions\applications\HeroSystemsEngine\bin\Debug\HeroSystemsEngine.dll
+C:\champions\applications\HeroSystemsEngine\bin\Debug\HeroSystemsEngine.pdb
+C:\champions\applications\HeroSystemsEngine\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\champions\applications\HeroSystemsEngine\bin\Debug\Microsoft.Xna.Framework.dll
+C:\champions\applications\HeroSystemsEngine\bin\Debug\Moq.dll
+C:\champions\applications\HeroSystemsEngine\bin\Debug\Moq.xml
+C:\champions\applications\HeroSystemsEngine\obj\Debug\HeroSystemsEngine.dll
+C:\champions\applications\HeroSystemsEngine\obj\Debug\HeroSystemsEngine.pdb
+C:\champions\applications\HeroSystemsEngine\obj\Debug\HeroSystemsEngine.csprojResolveAssemblyReference.cache
