@@ -7,8 +7,8 @@
       <ShowPassingTestsMenuOption>false</ShowPassingTestsMenuOption>
       <ShowFailingTestsMenuOption>true</ShowFailingTestsMenuOption>
       <ShowUnexecutedTestsMenuOption>true</ShowUnexecutedTestsMenuOption>
-      <ShowIgnoredTestsMenuOption>false</ShowIgnoredTestsMenuOption>
+      <ShowIgnoredTestsMenuOption>true</ShowIgnoredTestsMenuOption>
     </TestsWindowMenuOptions>
-    <TestsWindowSplitterDistance>756</TestsWindowSplitterDistance>
+    <TestsWindowSplitterDistance>330</TestsWindowSplitterDistance>
   </Settings>
 </SolutionConfiguration>

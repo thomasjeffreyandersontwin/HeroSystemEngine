@@ -127,7 +127,7 @@ namespace HeroSystemsEngine.GameMap
 
         public List<SightPerceptionModifiers> SightConditions { get; }
 
-        public void MoveGameObject(MovementDirection dirtection, int inchesMoving, HeroSystemCharacter character, int velocity)
+        public void MoveGameObject(HeroSystemCharacter character, int velocity, YawHexFacing yaw, PitchHexFacing pitch)
         {
             
         }

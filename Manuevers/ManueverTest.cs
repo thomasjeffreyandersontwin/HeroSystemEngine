@@ -374,6 +374,10 @@ namespace HeroSystemsEngine.Manuevers
 
         }
 
+
+
+
+
         [TestMethod]
         public void DefenderAttackedByRangeAttack_DefenderCannotBlockTheAttack()
         {
@@ -589,8 +593,7 @@ namespace HeroSystemsEngine.Manuevers
 
 
         }
-
-
+     
        
     }
 
@@ -1484,10 +1487,6 @@ namespace HeroSystemsEngine.Manuevers
             RapidFire.Perform();
             Assert.AreEqual(true, phase.Finished);
         }
-
-
-
-   
             
         [TestMethod]
         public void AttackerRapidFireMultipleTimes_AttackerSuffersMinus2OCVForEachShot()

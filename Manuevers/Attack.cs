@@ -1211,9 +1211,7 @@ namespace HeroSystemEngine.Manuevers
 			Damage.DamageDiceNumber = DamageDiceNumber;
 			return base.RollDamageAndKnockbackAndApplyDamageToDefender();
 		}
-
-
-
+        
 
 	}
 	public class Throw : Squeeze
@@ -1321,7 +1319,7 @@ namespace HeroSystemEngine.Manuevers
 	{
 		private Brace Brace;
 		private HeroSystemCharacter heroSystemCharacter;
-		public Set(HeroSystemCharacter character) : base(ManueverType.CombatManuever, "Move Through", character)
+		public Set(HeroSystemCharacter character) : base(ManueverType.CombatManuever, "Set", character)
 		{
 			Modifier.OCV.ModiferAmount = 1;
 			PhaseActionTakes = PhaseLength.Full;
@@ -1496,7 +1494,7 @@ namespace HeroSystemEngine.Manuevers
 	class RapidAttack : MultiAttack
 	{
 		public AttackType AttackType;
-		public RapidAttack(HeroSystemCharacter character, AttackType type, string name) : base("Rapid Fire ", character)
+		public RapidAttack(HeroSystemCharacter character, AttackType type, string name) : base(name, character)
 		{
 			PhaseActionTakes = PhaseLength.Full;
 			Modifier.DCV.Multiplier = .5;
@@ -1703,7 +1701,7 @@ namespace HeroSystemEngine.Manuevers
 	{
 
 
-		public PullingAPunch(HeroSystemCharacter character) : base("Pulling A Punch ", character)
+		public PullingAPunch(HeroSystemCharacter character) : base("Pulling A Punch", character)
 		{
 		}
 

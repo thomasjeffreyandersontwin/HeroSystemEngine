@@ -301,6 +301,9 @@ namespace HeroSystemsEngine.CombatSequence
 
         }
 
+
+
+
     }
 
     [TestClass]
@@ -346,6 +349,8 @@ namespace HeroSystemsEngine.CombatSequence
             x = Sequence.ActivateNextSegment;
 
 
+
+
         }
         void TestTimerCompletedOnCorrectSegment(SequenceTimer timer)
         {
@@ -365,6 +370,30 @@ namespace HeroSystemsEngine.CombatSequence
             Assert.AreEqual(dest, Sequence.ActiveSegment.Number);
         }
 
+        [TestMethod]
+        public void TrackingTimingWithRepeatingEvents_TimerActivatesNumberOfTimes()
+        {
+            Time = 1;
+            int Repeat = 3;
+            SequenceTimer timer = new SequenceTimer(DurationUnit.Segment, Time, Sequence, Timing.Start,0);
+
+            timer.TimerAction += new SequenceTimerAction(TestTimerCompletedOnCorrectSegment);
+            timer.StartTimer();
+
+            var x = Sequence.ActivateNextSegment;
+
+
+            Time = 4;
+            timer.Time = Time;
+
+
+            timer.TimerAction += new SequenceTimerAction(TestTimerCompletedOnCorrectSegment);
+            timer.StartTimer();
+            x = Sequence.ActivateNextSegment;
+            x = Sequence.ActivateNextSegment;
+            x = Sequence.ActivateNextSegment;
+            x = Sequence.ActivateNextSegment;
+        }
         [TestMethod]
         public void TrackingDurationWithOneOrMoreSegmentsToEndOfSegment_TimerActivatesAtEndOfAppropriateSegment()
         {

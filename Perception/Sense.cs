@@ -344,8 +344,6 @@ namespace HeroSystemsEngine.Perception
         
         #endregion
 
-
-
         #region sense and sense groups
         private void intitializeSenses()
         {
@@ -473,9 +471,11 @@ namespace HeroSystemsEngine.Perception
         bool IsRanged { get; set; }
         bool IsTargetingSense { get; set; }
         int PerceptionModifer { get; set; }
+
         LocationPrecision DetermineLocationOfTarget();
         bool Perceive();
         int RollRequiredToPercieveTarget { get; }
+        ITargetable Target { get; set; }
     }
 
     public class Sense : ISense
@@ -501,8 +501,6 @@ namespace HeroSystemsEngine.Perception
 
         }
 
-
-
         public SenseGroup SenseGroup { get; set; }
         public SenseGroupType Type => SenseGroup.Type;
         public SensingPower? Power { get; set; }
@@ -526,7 +524,6 @@ namespace HeroSystemsEngine.Perception
         }
         public bool IsTargetingSense { get; set;}
         #endregion
-
 
         #region percieve and locate target
         public LocationPrecision DetermineLocationOfTarget()

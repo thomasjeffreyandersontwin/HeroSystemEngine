@@ -9,6 +9,11 @@ using HeroSystemEngine.Character;
 using HeroSystemEngine.Manuevers;
 using Ploeh.AutoFixture;
 
+
+
+
+
+
 namespace HeroSystemsEngine.CombatSequence
 {
     public enum Timing { Start, End}
@@ -632,14 +637,16 @@ namespace HeroSystemsEngine.CombatSequence
     public class SequenceTimer
     {
         private Timing Timing;
-        public SequenceTimer(DurationUnit durationUnit, int time, CombatSequence sequence, Timing timing = Timing.Start)
+        public SequenceTimer(DurationUnit durationUnit, int time, CombatSequence sequence, Timing timing = Timing.Start, int repeat=0)
         {
+            Repeat = repeat;
             DurationUnit = durationUnit;
             Time = time;
             Sequence = sequence;
             Timing = timing;
         }
         public CombatSequence Sequence;
+        private int Repeat;
         public int Time { get; set; }
         public Object Start { get; private set; }
         public int End { get; private set; }
@@ -653,11 +660,11 @@ namespace HeroSystemsEngine.CombatSequence
                 Start = Sequence.ActiveSegment;
                 if (Timing == Timing.Start)
                 {
-                    Segment.Started += new SequenceEventHandler(StopTimerIfDone);
+                    Segment.Started += new SequenceEventHandler(ExecuteSequenceeventAndStopTimerIfDone);
                 }
                 else
                 {
-                    Segment.Ended += new SequenceEventHandler(StopTimerIfDone);
+                    Segment.Ended += new SequenceEventHandler(ExecuteSequenceeventAndStopTimerIfDone);
 
                 }
             }
@@ -668,32 +675,66 @@ namespace HeroSystemsEngine.CombatSequence
                 {
 
                     Start = Sequence.ActivePhase;
-                    Phase.PhaseStartHandler += new SequenceEventHandler(StopTimerIfDone);
+                    Phase.PhaseStartHandler += new SequenceEventHandler(ExecuteSequenceeventAndStopTimerIfDone);
                 }
                 else
                 {
-                    Phase.PhaseEndeHandler += new SequenceEventHandler(StopTimerIfDone);
+                    Phase.PhaseEndeHandler += new SequenceEventHandler(ExecuteSequenceeventAndStopTimerIfDone);
                 
                 }
 
             }
             else if (DurationUnit == DurationUnit.Turn)
             {
-                Sequence.TurnEnded += new SequenceEventHandler(StopTimerIfDone);
+                Sequence.TurnEnded += new SequenceEventHandler(ExecuteSequenceeventAndStopTimerIfDone);
             }
         }
-        void StopTimerIfDone(object sender)
+        public void ExecuteSequenceeventAndStopTimerIfDone(object sender)
         {
-            if (TimerOverThisSegment)
+            if (TimeToexecuteTimer)
             {
                 if (TimerAction != null)
                 {
                     TimerAction(this);
-                    TimerAction = null;
+                   
+                }
+                if (Repeat == 0)
+                {
+
+                    if (DurationUnit == DurationUnit.Segment)
+                    {
+                        Stop = Sequence.ActiveSegment;
+                    }
+                    else
+                    {
+
+                        if (DurationUnit == DurationUnit.Phase)
+                        {
+                            Stop = (Phase) Sequence.ActivePhase;
+                        }
+                    }
+                }
+                else
+                {
+                    if (DurationUnit == DurationUnit.Segment)
+                    {
+                        Start = Sequence.ActiveSegment;
+                    }
+                    else
+                    {
+
+                        if (DurationUnit == DurationUnit.Phase)
+                        {
+                            Start = (Phase)Sequence.ActivePhase;
+                        }
+                    }
+
+                    Repeat--;
                 }
             }
+            
         }
-        public bool TimerOverThisSegment
+        public bool TimeToexecuteTimer
         {
             get
             {
@@ -703,8 +744,8 @@ namespace HeroSystemsEngine.CombatSequence
                     int startNumber = start.Number;
                     int currentNumber = Sequence.ActiveSegment.Number;
                     if (GetFutureSegmentNumber(Time, startNumber) == currentNumber)
-                    { 
-                        Stop = Sequence.ActiveSegment;
+                    {
+                        
                         return true;
                     }
                     else
@@ -723,7 +764,7 @@ namespace HeroSystemsEngine.CombatSequence
                         var futPhase = GetFuturePhaseNumber(Time, phase);
                         if (futPhase == currentNumber)
                         {
-                            Stop = (Phase)Sequence.ActivePhase;
+                            
                             return true;
                         }
                         else
@@ -785,5 +826,18 @@ namespace HeroSystemsEngine.CombatSequence
         public event SequenceTimerAction TimerAction;
 
 
+        public void KillTimer()
+        {
+            TimerAction = null;
+        }
     }
 }
+
+
+
+
+
+
+
+
+

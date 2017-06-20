@@ -1,12 +1,16 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Deployment.Application;
 using System.Linq;
+using System.Text;
 using HeroSystemEngine.Dice;
 using HeroSystemEngine.Character;
 using HeroSystemsEngine.CombatSequence;
 using HeroSystemsEngine.Focus;
 using HeroSystemsEngine.GameMap;
+using HeroSystemsEngine.Movement;
+
 //using HeroVirtualTabletop.AnimatedAbility;
 //using HeroVirtualTabletop.PerformAttack;
 
@@ -104,6 +108,21 @@ namespace HeroSystemEngine.Manuevers
         {
             get
             {
+
+                if (Character.ManueverInProgess !=null && Character.ManueverInProgess.Type == ManueverType.MovementManuever)
+                {
+                    if (Character.CharacterMovement.Velocity > 0)
+                    {
+                        if (this.Type != ManueverType.MovementManuever)
+                        {
+                            return false;
+                        }
+                        if (this.Name != Character.ManueverInProgess.Name)
+                        {
+                            return false;
+                        }
+                    }
+                }
 
                 if (NotTheCharactersPhaseAndCharacterIsPerformingADefensiveManuever())
                 {
@@ -371,6 +390,7 @@ namespace HeroSystemEngine.Manuevers
         public string Charasteristic;
         public int ModiferAmount;
         public double Multiplier;
+        public bool SetToZero = false;
         public int CumulativeModifierApplied;
         public abstract void ApplyModifierTo(HeroSystemCharacter character);
         public abstract void RemoveModifierFrom(HeroSystemCharacter character);
@@ -472,6 +492,11 @@ namespace HeroSystemEngine.Manuevers
                 {
                      character.Characteristics[Charasteristic].Multiplier *= Multiplier;
                 }
+            }
+
+            if (SetToZero == true)
+            {
+                character.Characteristics[Charasteristic].ToZero = true;
             }
   
         CumulativeModifierApplied += deltaMod;
@@ -732,28 +757,22 @@ namespace HeroSystemEngine.Manuevers
             Sequence.ActiveSegment.CombatPhases.FirstOrDefault()?.Activate();
 
         }
-        public override bool CanPerform
+        
+        public override bool canPerform()
         {
-            get
+            if (!Character.IsAborting)
             {
-                if (!Character.IsAborting)
-                {
 
-                    if (Character.SPD.Phases.ContainsKey(Sequence.ActiveSegment.Number))
+                if (Character.SPD.Phases.ContainsKey(Sequence.ActiveSegment.Number))
+                {
+                    if (Character.SPD.Phases[Sequence.ActiveSegment.Number].Finished == false)
                     {
-                        if (Character.SPD.Phases[Sequence.ActiveSegment.Number].Finished == false)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                    return false;
                 }
                 return false;
             }
-        }
-        public override bool canPerform()
-        {
-            throw new NotImplementedException();
+            return false;
         }
     }
     class Hurry : Manuever
@@ -785,28 +804,22 @@ namespace HeroSystemEngine.Manuevers
 
 
         }
-        public override bool CanPerform
-        {
-            get
-            {
-                if (!Character.IsAborting)
-                {
 
-                    if (Character.SPD.Phases.ContainsKey(Sequence.ActiveSegment.Number))
+        public override bool canPerform()
+        {
+            if (!Character.IsAborting)
+            {
+
+                if (Character.SPD.Phases.ContainsKey(Sequence.ActiveSegment.Number))
+                {
+                    if (Character.SPD.Phases[Sequence.ActiveSegment.Number].Finished == false)
                     {
-                        if (Character.SPD.Phases[Sequence.ActiveSegment.Number].Finished == false)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                    return false;
                 }
                 return false;
             }
-        }
-        public override bool canPerform()
-        {
-            throw new NotImplementedException();
+            return false;
         }
     }
     public class Recover : Manuever

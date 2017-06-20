@@ -70,8 +70,16 @@ namespace HeroSystemEngine.Character
         {
             get
             {
-
-                double ret =  _currentValue + Modifier;
+                double ret;
+                if (ToZero)
+                {
+                    ret = 0;
+                }
+                else
+                {
+                    ret = _currentValue;
+                }
+                ret =  ret + Modifier;
                 if (Multiplier != 0)
                 {
                     ret = ret * Multiplier;
@@ -83,6 +91,8 @@ namespace HeroSystemEngine.Character
             }
             set { _currentValue = value; }
         }
+
+        public bool ToZero { get; set; }
 
         public string Name;
         public HeroSystemCharacter Character;
@@ -624,6 +634,7 @@ namespace HeroSystemEngine.Character
                 */
             }
         }
+
         public Dictionary<String, IManuever> AllowedManuevers
         {
             get
@@ -632,13 +643,15 @@ namespace HeroSystemEngine.Character
 
                 
             }
-    }
-       
+        }
+
         private void InterruptManueverInProgess()
         {
             ManueverInProgess?.Deactivate();
             ManueverInProgess = null;
         }
+
+
         public Manuever ActiveManuever { get; set; }
         public Manuever ManueverInProgess { get; set; }
 
@@ -707,11 +720,19 @@ namespace HeroSystemEngine.Character
                 {
                     lastSegmentNumber = 12;
                 }
-                int index = SPD.SegmentNumbersCharacterHasPhases.IndexOf(lastSegmentNumber) + 1;
+                int index;
+                if (SPD.Phases[lastSegmentNumber].Finished == false)
+                {
+                    index = SPD.SegmentNumbersCharacterHasPhases.IndexOf(lastSegmentNumber);
+                }
+                else
+                {
+                    index = SPD.SegmentNumbersCharacterHasPhases.IndexOf(lastSegmentNumber) + 1;
+                }
 
                 if (index == SPD.Phases.Count)
                 {
-                    index = 1;
+                    index = 0;
                 }
                 int nextSegmentNumber = SPD.SegmentNumbersCharacterHasPhases[index];
 
@@ -747,6 +768,7 @@ namespace HeroSystemEngine.Character
         public Charasteristic PD;
         public Charasteristic ED;
         public Charasteristic RPD;
+
         public Charasteristic RED;
 
         public Dictionary<CharacterStateType, HeroCharacterState> TakeDamage(DamageAmount damageAmount)
@@ -757,7 +779,6 @@ namespace HeroSystemEngine.Character
                 damageDone.STUN /=2;
                 damageDone.BOD /= 2;
                 ActiveManuever = null;
-
             }
 
             STUN.Deduct(damageDone.STUN);
@@ -766,6 +787,7 @@ namespace HeroSystemEngine.Character
             var statesResultingFromDamage = applyDamageStateBasedOnDamageAmount(damageDone);
             return statesResultingFromDamage;
         }
+
         private Dictionary<CharacterStateType, HeroCharacterState> applyDamageStateBasedOnDamageAmount(DamageAmount damageDone)
         {
             Dictionary<CharacterStateType, HeroCharacterState> statesResultingFromDamage =
